@@ -1,0 +1,12 @@
+{block content}
+<a n:href="Sign:out"> Odhlásit </a>
+    <h1 n:block="title">Administrace</h1>
+
+    {foreach $posts as $post}
+    <div class="post">
+        <h2>{$post->title}</a></h2>
+        <a href="{link :Admin:Post:edit $post->id}">Editovat stránku</a>
+        <a href="">Smazat stránku</a>
+    </div>
+    {/foreach}
+{/block}
