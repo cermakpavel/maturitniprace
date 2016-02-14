@@ -16,11 +16,29 @@ class HomepagePresenter extends \App\BaseModule\Presenters\BasePresenter
 		$this->database = $database;
 	}
 
+	protected function startup() {
+		parent::startup();
+
+		$settings = $this->database->table('setting')
+			->where('id = 1');
+		foreach ($settings as $setting) {
+			if ($setting->onepage == 0) {
+				$posts = $this->template->posts = $this->database->table('posts')
+					->order('id')
+					->limit(1);
+				foreach ($posts as $post) {
+					$this->redirect('Post:show', $post->id);
+				}
+			}
+		}
+	}
+
 	public function renderDefault()
 	{
+		$this->template->page = $this->database->table('setting')
+			->where('id = 1');
 		$this->template->posts = $this->database->table('posts')
-			->order('created_at DESC')
-			->limit(5);
+			->order('created_at DESC');
 	}
 
 }

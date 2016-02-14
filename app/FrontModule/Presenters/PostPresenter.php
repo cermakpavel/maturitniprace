@@ -22,6 +22,10 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
             $this->error('Stránka nebyla nalezena');
         }
         $this->template->post = $post;
+        $this->template->posts = $this->database->table('posts')
+            ->order('created_at DESC');
+        $this->template->page = $this->database->table('setting')
+            ->where('id = 1');
         $this->template->comments = $post->related('comment')->order('created_at');
     }
 
