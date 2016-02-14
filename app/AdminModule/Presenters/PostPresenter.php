@@ -25,6 +25,8 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 
     public function actionEdit($postId)
     {
+        $this->template->page = $this->database->table('setting')
+            ->where('id = 1');
         $post = $this->database->table('posts')->get($postId);
         if (!$post) {
             $this->error('Příspěvek nebyl nalezen');
