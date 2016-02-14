@@ -27,9 +27,11 @@ class DashboardPresenter extends \App\BaseModule\Presenters\BasePresenter
 
 	public function renderDefault()
 	{
-		$user = $this->getUser();
-		echo 'Prihlášen uživatel: ' . $user->getIdentity()->id;
-		echo '<br/>' . $user->getIdentity()->username;
+		$this->template->page = $this->database->table('setting')
+			->where('id = 1');
+		//$user = $this->getUser();
+		//echo 'Prihlášen uživatel: ' . $user->getIdentity()->id;
+		//$username = $user->getIdentity()->username;
 		$this->template->posts = $this->database->table('posts')
 			->order('created_at DESC')
 			->limit(5);

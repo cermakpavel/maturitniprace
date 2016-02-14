@@ -15,6 +15,14 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
         $this->database = $database;
     }
 
+    protected function startup() {
+        parent::startup();
+
+        if ($this->user->isLoggedIn() != TRUE) {
+            $this->redirect(':Admin:Sign:in');
+        }
+    }
+
     public function actionEdit($postId)
     {
         $post = $this->database->table('posts')->get($postId);
@@ -24,15 +32,30 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
         $this['postForm']->setDefaults($post->toArray());
     }
 
+    public function actionDelete($id) {
+        $this->database->table('comments')
+            ->where('post_id = ?', $id)
+            ->delete();
+        $this->database->table('posts')
+            ->where('id = ?', $id)
+            ->delete();
+        $this->flashMessage('Stránka byla smazána.', 'info');
+        $this->redirect('Dashboard:');
+    }
+
     protected function createComponentPostForm()
     {
         $form = new Form;
         $form->addText('title', 'Titulek:')
-            ->setRequired();
-        $form->addTextArea('content', 'Obsah:')
-            ->setRequired();
+            ->setRequired()
+            ->getControlPrototype()->class('form-control');
 
-        $form->addSubmit('send', 'Uložit a publikovat');
+        $form->addTextArea('content', 'Obsah:')
+            ->setRequired()
+            ->getControlPrototype()->class('form-control');
+
+        $form->addSubmit('send', 'Uložit a publikovat')
+            ->getControlPrototype()->class('btn btn-primary');
         $form->onSuccess[] = array($this, 'postFormSucceeded');
 
         return $form;
@@ -40,6 +63,8 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 
     public function postFormSucceeded($form, $values)
     {
+        $this->template->page = $this->database->table('setting')
+            ->where('id = 1');
         $postId = $this->getParameter('postId');
 
         if ($postId) {

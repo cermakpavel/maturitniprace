@@ -1,12 +1,60 @@
 {block content}
-<a n:href="Sign:out"> Odhlásit </a>
-    <h1 n:block="title">Administrace</h1>
-
-    {foreach $posts as $post}
-    <div class="post">
-        <h2>{$post->title}</a></h2>
-        <a href="{link :Admin:Post:edit $post->id}">Editovat stránku</a>
-        <a href="">Smazat stránku</a>
+<div class="row">
+    <div class="col-lg-12">
+        <h1 class="page-header">Dashboard</h1>
     </div>
-    {/foreach}
-{/block}
+    <!-- /.col-lg-12 -->
+</div>
+	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">
+		<div class="alert alert-success">
+        	{$flash->message}
+		</div>
+	</div>
+<!-- /.row -->
+<div class="row">
+     <div class="col-lg-6">
+         <div class="panel panel-default">
+             <div class="panel-heading">
+                 Seznam stránek
+             </div>
+             <!-- /.panel-heading -->
+             <div class="panel-body">
+                 <div class="table-responsive">
+                     <table class="table">
+                          <thead>
+                            <tr>
+                            <th>Nadpis stránky </th>
+                            <th></th>
+                            <th>
+                                <a n:href="Post:create">Přidat stránku</a>
+                            </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          {if !count($posts)}
+                            <tr>
+                              <td>Zatím nebyla vytvořená žádná stránka.</td>
+                            </tr>
+                          {/if}
+                          {if count($posts)}
+                            {foreach $posts as $post}
+                             <tr>
+                                 <td>{$post['title']}</td>
+                                 <td><a href="{link :Admin:Post:edit $post->id}">Upravit</a></td>
+                                 <td><a href="{link :Admin:Post:delete $post->id}">Smazat</a></td>
+                             </tr>
+                             {/foreach}
+                          {/if}
+                         </tbody>
+                     </table>
+                 </div>
+                 <!-- /.table-responsive -->
+             </div>
+             <!-- /.panel-body -->
+         </div>
+         <!-- /.panel -->
+     </div>
+                 <!-- /.col-lg-6 -->
+</div>
+<!-- /.row -->
+</div>
