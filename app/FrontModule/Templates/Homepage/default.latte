@@ -1,13 +1,18 @@
 {block content}
-    <h1 n:block="title">Můj blog</h1>
-
-    {foreach $posts as $post}
-    <div class="post">
-        <div class="date">{$post->created_at|date:'F j, Y'}</div>
-
-        <h2><a href="{link Post:show $post->id}">{$post->title}</a></h2>
-
-        <div>{$post->content}</div>
-    </div>
-    {/foreach}
+{foreach $posts as $post}
+<section id="service">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="block-top">
+                            <div class="service-header">
+                                <h1 id="{$post->id}">{$post->title}</h1>
+                                <p>{$post->content}</p>
+                            </div>
+                        </div>
+                    </div><!-- .col-md-12 close -->
+                </div><!-- row close -->
+            </div><!-- .container close -->
+</section><!-- #service close -->
+{/foreach}
 {/block}
