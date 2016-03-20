@@ -33,9 +33,10 @@ class HomepagePresenter extends \App\BaseModule\Presenters\BasePresenter
 		}
 	}
 
-	public function renderDefault ($id = 1)
+	public function renderDefault ()
 	{
-		$this->settingService->getPageById($id);
+		$this->template->page = $this->database->table('setting')
+			->where('id = 1');
 		$this->template->posts = $this->database->table('posts')
 			->order('created_at DESC');
 	}
