@@ -4,7 +4,15 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">Nastavení</h1>
-                        {control settingForm}
+                        {form settingForm}
+                            <strong>Název webové stránky:</strong>
+                            {input title class => "form-control"}
+                            <strong>Podnadpis webu:</strong>
+                            {input subtitle class => "form-control"}
+                            <strong>Styl zobrazení stránek:</strong>
+                            {input onepage class => "form-control"}
+                            {input send class => "btn btn-primary"}
+                        {/form}
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>

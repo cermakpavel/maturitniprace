@@ -50,13 +50,10 @@ class SettingPresenter extends \App\BaseModule\Presenters\BasePresenter
             ->getControlPrototype()->class('form-control')
             ->setRequired();
         $form->addTextArea('subtitle', 'Podtitulek stránky:')
-            ->getControlPrototype()->class('form-control')
             ->setRequired();
-        $form->addSelect('onepage', 'Zvolte druh šablony:', $template)
-            ->getControlPrototype()->class('form-control');
+        $form->addSelect('onepage', 'Zvolte druh šablony:', $template);
 
-        $form->addSubmit('send', 'Uložit nastavení')
-            ->getControlPrototype()->class('btn btn-primary');
+        $form->addSubmit('send', 'Uložit nastavení');
         $form->onSuccess[] = array($this, 'settingFormSucceeded');
 
         return $form;

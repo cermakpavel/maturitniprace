@@ -49,15 +49,12 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
     {
         $form = new Form;
         $form->addText('title', 'Titulek:')
-            ->setRequired()
-            ->getControlPrototype()->class('form-control');
+            ->setRequired();
 
         $form->addTextArea('content', 'Obsah:')
-            ->setRequired()
-            ->getControlPrototype()->class('form-control');
+            ->setRequired();
 
-        $form->addSubmit('send', 'Uložit a publikovat')
-            ->getControlPrototype()->class('btn btn-primary');
+        $form->addSubmit('send', 'Uložit a publikovat');
         $form->onSuccess[] = array($this, 'postFormSucceeded');
 
         return $form;
