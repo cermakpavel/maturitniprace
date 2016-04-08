@@ -3,4 +3,3 @@ temp/*
 !.gitignore
 
 !web.config
-app/config/config.local.neon
