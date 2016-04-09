@@ -2,8 +2,8 @@
 # WARNING: it is CRITICAL that this file & directory are NOT accessible directly via a web browser!
 # https://nette.org/security-warning
 #
-parameters:
 
+parameters:
 
 php:
 	date.timezone: Europe/Prague
@@ -23,6 +23,12 @@ services:
 	- App\Model\UserManager
 	- App\Forms\FormFactory
 	- App\Forms\SignFormFactory
+	- App\Model\Repositories\PostRepository
+	- App\Model\Repositories\SettingRepository
+	- App\Model\Repositories\UserRepository
+	- App\Model\Services\SettingService
+	- App\Model\Services\PostService
+	- App\Model\Services\UserService
 	router: App\RouterFactory::createRouter
 
 
