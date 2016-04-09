@@ -1,32 +1,39 @@
 <?php
 namespace App\FrontModule\Presenters;
 
-use Nette,
-    Nette\Application\UI\Form;
+use App\Model\Services\PostService;
+use App\Model\Services\SettingService;
+use Nette;
+use Nette\Application\UI\Form;
 
 
 class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 {
-    /** @var Nette\Database\Context */
-    private $database;
+    private $postService;
+    private $settingService;
 
-    public function __construct(Nette\Database\Context $database)
+    public function injectPost(PostService $postService)
     {
-        $this->database = $database;
+        $this->postService = $postService;
+    }
+
+    public function injectSetting(SettingService $settingService)
+    {
+        $this->settingService = $settingService;
     }
 
     public function renderShow($postId)
     {
-        $post = $this->database->table('posts')->get($postId);
-        if (!$post) {
+        $post = $this->postService->getPostById($postId);
+        $posts = $this->postService->getAllPosts();
+        if (!$post or !$posts) {
             $this->error('Stránka nebyla nalezena');
         }
+        $posts = $this->postService->getAllPosts();
+        $setting = $this->settingService->getSetting();
         $this->template->post = $post;
-        $this->template->posts = $this->database->table('posts')
-            ->order('created_at DESC');
-        $this->template->page = $this->database->table('setting')
-            ->where('id = 1');
-        $this->template->comments = $post->related('comment')->order('created_at');
+        $this->template->posts = $posts;
+        $this->template->setting = $setting;
     }
 
     protected function createComponentCommentForm()
@@ -47,20 +54,5 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
         $form->onSuccess[] = array($this, 'commentFormSucceeded');
 
         return $form;
-    }
-
-    public function commentFormSucceeded($form, $values)
-    {
-        $postId = $this->getParameter('postId');
-
-        $this->database->table('comments')->insert(array(
-            'post_id' => $postId,
-            'name' => $values->name,
-            'email' => $values->email,
-            'content' => $values->content,
-        ));
-
-        $this->flashMessage('Děkuji za komentář', 'success');
-        $this->redirect('this');
     }
 }

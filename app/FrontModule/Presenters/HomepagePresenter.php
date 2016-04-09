@@ -4,41 +4,42 @@ namespace App\FrontModule\Presenters;
 
 use Nette;
 use App\Model;
+use App\Model\Services\PostService;
+use App\Model\Services\SettingService;
 
 
 class HomepagePresenter extends \App\BaseModule\Presenters\BasePresenter
 {
-	/** @var Nette\Database\Context */
-	private $database;
 
-	public function __construct(Nette\Database\Context $database)
+	private $postService;
+	private $settingService;
+
+	public function injectPost(PostService $postService)
 	{
-		$this->database = $database;
+		$this->postService = $postService;
 	}
 
+	public function injectSetting(SettingService $settingService)
+	{
+		$this->settingService = $settingService;
+	}
+	
 	protected function startup() {
 		parent::startup();
 
-		$settings = $this->database->table('setting')
-			->where('id = 1');
-		foreach ($settings as $setting) {
-			if ($setting->onepage == 0) {
-				$posts = $this->template->posts = $this->database->table('posts')
-					->order('id')
-					->limit(1);
-				foreach ($posts as $post) {
-					$this->redirect('Post:show', $post->id);
-				}
-			}
+		$setting = $this->settingService->getSetting();
+		if (!$setting->onepage) {
+			$this->redirect('Post:show', $this->postService->getFirstPost()->id);
 		}
+
 	}
 
 	public function renderDefault ()
 	{
-		$this->template->page = $this->database->table('setting')
-			->where('id = 1');
-		$this->template->posts = $this->database->table('posts')
-			->order('created_at DESC');
+		$posts = $this->postService->getAllPosts();
+		$setting = $this->settingService->getSetting();
+		$this->template->posts = $posts;
+		$this->template->setting = $setting;
 	}
 
 }
