@@ -4,7 +4,8 @@ namespace App\AdminModule\Presenters;
 
 use Nette;
 use App\Model;
-use Nette\Security\User;
+use App\Model\Services\PostService;
+use App\Model\Services\SettingService;
 
 
 class DashboardPresenter extends \App\BaseModule\Presenters\BasePresenter
@@ -13,28 +14,29 @@ class DashboardPresenter extends \App\BaseModule\Presenters\BasePresenter
 	protected function startup() {
 		parent::startup();
 
-		if ($this->user->isLoggedIn() != TRUE) {
+		if (!$this->user->isLoggedIn()) {
 			$this->redirect(':Admin:Sign:in');
 		}
 	}
-	/** @var Nette\Database\Context */
-	private $database;
+	private $postService;
+	private $settingService;
 
-	public function __construct(Nette\Database\Context $database)
+	public function injectPost(PostService $postService)
 	{
-		$this->database = $database;
+		$this->postService = $postService;
+	}
+
+	public function injectSetting(SettingService $settingService)
+	{
+		$this->settingService = $settingService;
 	}
 
 	public function renderDefault()
 	{
-		$this->template->page = $this->database->table('setting')
-			->where('id = 1');
-		//$user = $this->getUser();
-		//echo 'Prihlášen uživatel: ' . $user->getIdentity()->id;
-		//$username = $user->getIdentity()->username;
-		$this->template->posts = $this->database->table('posts')
-			->order('created_at DESC')
-			->limit(5);
+		$posts = $this->postService->getAllPosts();
+		$setting = $this->settingService->getSetting();
+		$this->template->posts = $posts;
+		$this->template->setting = $setting;
 	}
 
 }
