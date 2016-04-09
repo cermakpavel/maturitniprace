@@ -6,8 +6,8 @@
      <head>
          <meta charset="utf-8">
          <meta http-equiv="X-UA-Compatible" content="IE=edge">
-         {foreach $page as $onepage}{/foreach}
-         <title>{$onepage->title}</title>
+         <title>{$setting->title}</title>
+
          <meta name="description" content="">
          <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -50,21 +50,21 @@
  									<span class="icon-bar"></span>
  								  </button>
  								  <div class="nav-logo">
- 									<h1>{$onepage->title}</h1>
+
  								  </div>
  								</div>
 
  								<!-- Collect the nav links, forms, and other content for toggling -->
  								<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
  								  <ul class="nav navbar-nav">
- 									{foreach $posts as $post}
- 									{if ($onepage->onepage == 1)}
-										<li><a href="#{$post->id}">{$post->title}</a></li>
-									{/if}
-									{if ($onepage->onepage == 0)}
-										<li><a href="{link Post:show $post->id}">{$post->title}</a></li>
-									{/if}
-                                    {/foreach}
+ 								  {foreach $posts as $post}
+                                    {if ($setting->onepage_layout == 1)}
+                                        <li><a href="#{$post->id}">{$post->title}</a></li>
+                                    {/if}
+                                    {if ($setting->onepage_layout == 0)}
+                                        <li><a href="{link Post:show $post->id}">{$post->title}</a></li>
+                                    {/if}
+                                  {/foreach}
  								  </ul>
  								</div><!-- /.navbar-collapse -->
  							  </div><!-- /.container-fluid -->

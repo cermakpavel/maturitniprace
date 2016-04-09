@@ -28,7 +28,7 @@ class HomepagePresenter extends \App\BaseModule\Presenters\BasePresenter
 		parent::startup();
 
 		$setting = $this->settingService->getSetting();
-		if (!$setting->onepage) {
+		if (!$setting->onepage_layout) {
 			$this->redirect('Post:show', $this->postService->getFirstPost()->id);
 		}
 

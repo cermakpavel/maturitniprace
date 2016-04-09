@@ -9,6 +9,7 @@ use Nette\Application\UI\Form;
 
 class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 {
+
     private $postService;
     private $settingService;
 
@@ -20,6 +21,16 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
     public function injectSetting(SettingService $settingService)
     {
         $this->settingService = $settingService;
+    }
+
+    protected function startup() {
+        parent::startup();
+
+        $setting = $this->settingService->getSetting();
+        if ($setting->onepage_layout) {
+            $this->redirect('Homepage:');
+        }
+
     }
 
     public function renderShow($postId)
