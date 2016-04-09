@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pajos
- * Date: 08.04.2016
- * Time: 15:46
- */
 
 namespace App\Model\Services;
 
@@ -14,13 +8,14 @@ use App\Model\Repositories\PostRepository;
 class PostService
 {
     /**
-     * @var PostRepository
+     * @var PostService
      */
     private $postRepository;
 
     /**
      * PostService constructor.
-     * @param PostRepository $postRepository
+     *
+     *@param PostRepository $postRepository
      */
     public function __construct(PostRepository $postRepository)
     {
@@ -32,14 +27,24 @@ class PostService
         return $this->postRepository->getPostById($id);
     }
 
+    public function getFirstPost()
+    {
+        return $this->getAllPosts()->fetch();
+    }
+
     public function getAllPosts()
     {
         return $this->postRepository->getAllPosts();
     }
 
-    public function getFirstPost()
+	public function insertPost($values)
+	{
+		$this->insertPost($values);
+	}
+
+	public function deletePost($postId)
     {
-        return $this->getAllPosts()->fetch();
+	    return $this->deletePost($postId);
     }
 
 

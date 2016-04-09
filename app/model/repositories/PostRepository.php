@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pajos
- * Date: 08.04.2016
- * Time: 15:47
- */
 
 namespace App\Model\Repositories;
 
@@ -22,6 +16,21 @@ class PostRepository extends BaseRepository
     public function getAllPosts()
     {
         return $this->getTable()->order('created_at DESC');
+    }
+
+    public function insertPost($values)
+    {
+	    $this->getTable()->insert($values);
+    }
+
+    public function updatePost($postId, $values)
+    {
+	    //$this->updateTable->query->
+    }
+
+    public function deletePost($postId)
+    {
+        return $this->getTable->where($postId)->delete;
     }
 
 }

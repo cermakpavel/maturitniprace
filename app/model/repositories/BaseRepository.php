@@ -15,7 +15,7 @@ abstract class BaseRepository
     /**
      * @var Context
      */
-    private $context;
+    protected $context;
     protected $name;
 
     /**
@@ -31,4 +31,5 @@ abstract class BaseRepository
     {
         return $this->context->table($this->name);
     }
+
 }
