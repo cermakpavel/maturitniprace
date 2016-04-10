@@ -1,10 +1,9 @@
 <?php
 namespace App\AdminModule\Presenters;
 
+use App\Model\Services\SettingService;
 use Nette;
 use Nette\Application\UI\Form;
-use App\Model\Services\SettingService;
-
 
 class SettingPresenter extends \App\BaseModule\Presenters\BasePresenter
 {
@@ -15,18 +14,28 @@ class SettingPresenter extends \App\BaseModule\Presenters\BasePresenter
         $this->settingService = $settingService;
     }
 
+    public function actionEdit()
+    {
+        $setting = $this->settingService->getSetting();
+        $this->template->setting = $setting;
+        $this['settingForm']->setDefaults($setting->toArray());
+    }
+
+    public function settingFormSucceeded($form, $values)
+    {
+        $setting = $this->settingService->getSetting();
+        $setting->update($values);
+
+        $this->flashMessage('Nastavení bylo úspěšně uloženo.', 'success');
+        $this->redirect('Dashboard:');
+    }
+
     protected function startup() {
         parent::startup();
 
         if ($this->user->isLoggedIn() != TRUE) {
             $this->redirect(':Admin:Sign:in');
         }
-    }
-
-    public function actionEdit()
-    {
-        $setting = $this->settingService->getSetting();
-        $this['settingForm']->setDefaults($setting->toArray());
     }
 
     protected function createComponentSettingForm()
@@ -44,14 +53,5 @@ class SettingPresenter extends \App\BaseModule\Presenters\BasePresenter
         $form->onSuccess[] = array($this, 'settingFormSucceeded');
 
         return $form;
-    }
-
-    public function settingFormSucceeded($form, $values)
-    {
-        $setting = $this->settingService->getSetting();
-        $setting->update($values);
-
-        $this->flashMessage('Nastavení bylo úspěšně uloženo.', 'success');
-        $this->redirect('Dashboard:');
     }
 }
