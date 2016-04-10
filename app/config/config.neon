@@ -18,11 +18,10 @@ application:
 session:
 	expiration: 14 days
 
-
 services:
-	- App\Model\UserManager
 	- App\Forms\FormFactory
 	- App\Forms\SignFormFactory
+	- App\Model\UserManager
 	- App\Model\Repositories\PostRepository
 	- App\Model\Repositories\SettingRepository
 	- App\Model\Repositories\UserRepository
