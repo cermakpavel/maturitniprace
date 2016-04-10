@@ -2,9 +2,8 @@
 
 namespace App\BaseModule\Presenters;
 
-use Nette;
 use App\Model;
-
+use Nette;
 
 /**
  * Base presenter for all application presenters.
