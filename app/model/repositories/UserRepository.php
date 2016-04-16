@@ -19,9 +19,9 @@ class UserRepository extends BaseRepository
 		$this->userRepository = $userRepository;
 	}
 
-	public function getUser($id)
+	public function getUser($username)
 	{
-		return $this->getTable()->get($id);
+		return $this->getTable()->get($username)->fetch();
 	}
 	
 }

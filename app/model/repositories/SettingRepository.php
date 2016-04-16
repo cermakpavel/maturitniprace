@@ -13,7 +13,7 @@ class SettingRepository extends BaseRepository
 {
     protected $name = "setting";
 
-    public function getSetting($id)
+    public function getSetting()
     {
         return $this->getTable()->fetch();
     }
