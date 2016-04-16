@@ -43,20 +43,20 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
     public function postFormSucceeded($form, $values)
     {
         $setting = $this->settingService->getSetting();
-        $this->template->setting = $setting;
+	    $this->template->setting = $setting;
 
-        $postId = $this->getParameter('postId');
+	    $postId = $this->getParameter('postId');
 
-        if ($postId) {
-            $post = $this->postService->getPostById($postId);
-            $post->update($values);
-        } else {
-            $post = $this->postService->getAllPosts();
-            $post->insert($values);
-        }
+	    if ($postId) {
+		    $this->postService->getPostById($postId);
+		    $this->postService->updatePost($postId, $values);
+	    } else {
+		    $this->postService->getAllPosts();
+		    $this->postService->insertPost($values);
+	    }
 
-        $this->flashMessage('Příspěvek byl úspěšně publikován.', 'success');
-        $this->redirect('Dashboard:');
+	    $this->flashMessage('Příspěvek byl úspěšně publikován.', 'success');
+	    $this->redirect('Dashboard:');
     }
 
 	protected function startup() {
