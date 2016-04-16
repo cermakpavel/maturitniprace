@@ -13,48 +13,89 @@
 <!-- /.row -->
 <div class="row">
      <div class="col-lg-6">
-         <div class="panel panel-default">
-             <div class="panel-heading">
-                 Seznam stránek
-             </div>
-             <!-- /.panel-heading -->
-             <div class="panel-body">
-                 <div class="table-responsive">
-                     <table class="table">
-                          <thead>
-                            <tr>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Seznam stránek
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
                             <th>Nadpis stránky </th>
                             <th></th>
                             <th>
                                 <a n:href="Post:create">Přidat stránku</a>
                             </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                          {if !count($posts)}
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {if !count($posts)}
                             <tr>
-                              <td>Zatím nebyla vytvořená žádná stránka.</td>
+                                <td>Zatím nebyla vytvořená žádná stránka.</td>
                             </tr>
-                          {/if}
-                          {if count($posts)}
+                        {/if}
+                        {if count($posts)}
                             {foreach $posts as $post}
-                             <tr>
-                                 <td>{$post['title']}</td>
-                                 <td><a href="{link :Admin:Post:edit $post->id}">Upravit</a></td>
-                                 <td><a href="{link :Admin:Post:delete $post->id}">Smazat</a></td>
-                             </tr>
-                             {/foreach}
-                          {/if}
-                         </tbody>
-                     </table>
-                 </div>
-                 <!-- /.table-responsive -->
-             </div>
-             <!-- /.panel-body -->
-         </div>
-         <!-- /.panel -->
-     </div>
-                 <!-- /.col-lg-6 -->
+                                <tr>
+                                    <td>{$post['title']}</td>
+                                    <td><a href="{link :Admin:Post:edit $post->id}">Upravit</a></td>
+                                    <td><a href="{link :Admin:Post:delete $post->id}">Smazat</a></td>
+                                </tr>
+                            {/foreach}
+                        {/if}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-6 -->
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Nové komentáře
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Autor komentáře </th>
+                            <th>Obsah komentáře </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {if !count($comments)}
+                            <tr>
+                                <td>Není žádný komentář ke schválení.</td>
+                            </tr>
+                        {/if}
+                        {if count($comments)}
+                            {foreach $comments as $comment}
+                                <tr>
+                                    <td>{$comment->name}</td>
+                                    <td>{$comment->content}</td>
+                                    <td><a href="{link :Admin:Dashboard:approveComment $comment->id}">Schválit</a></td>
+                                    <td><a href="{link :Admin:Dashboard:deleteComment $comment->id}">Smazat</a></td>
+                                </tr>
+                            {/foreach}
+                        {/if}
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-6 -->
 </div>
 <!-- /.row -->
-</div>
+

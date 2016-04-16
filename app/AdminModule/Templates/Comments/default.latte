@@ -1,0 +1,54 @@
+{block content}
+<div class="row">
+	<div class="col-lg-12">
+		<h1 class="page-header">Výpis komentářů</h1>
+	</div>
+	<!-- /.col-lg-12 -->
+</div>
+<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">
+	<div class="alert alert-success">
+		{$flash->message}
+	</div>
+</div>
+<!-- /.row -->
+<div class="row">
+	{foreach $posts as $post}
+	<div class="col-lg-6">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				{$post->title}
+			</div>
+			<!-- /.panel-heading -->
+			<div class="panel-body">
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+						<tr>
+							<th>Autor komentáře </th>
+							<th>Obsah komentáře</th>
+							<th></th>
+						</tr>
+						</thead>
+						<tbody>
+							{foreach $comments as $comment}
+								{if ($comment->post_id == $post->id)}
+									<tr>
+										<td>{$comment->name}</td>
+										<td>{$comment->content}</td>
+										<td><a href="{link :Admin:Comments:deleteComment $comment->id}">Smazat</a></td>
+									</tr>
+								{/if}
+							{/foreach}
+						</tbody>
+					</table>
+				</div>
+				<!-- /.table-responsive -->
+			</div>
+			<!-- /.panel-body -->
+		</div>
+		<!-- /.panel -->
+	</div>
+	<!-- /.col-lg-6 -->
+	{/foreach}
+</div>
+<!-- /.row -->
