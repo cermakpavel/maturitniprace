@@ -21,9 +21,9 @@ class UserService
 		$this->userRepository = $userRepository;
 	}
 
-	public function getUser($id)
+	public function getUser($username)
 	{
-		return $this->userRepository->getUser($id);
+		return $this->userRepository->getUser($username);
 	}
 
 }
