@@ -25,9 +25,11 @@ services:
 	- App\Model\Repositories\PostRepository
 	- App\Model\Repositories\SettingRepository
 	- App\Model\Repositories\UserRepository
+	- App\Model\Repositories\CommentRepository
 	- App\Model\Services\SettingService
 	- App\Model\Services\PostService
 	- App\Model\Services\UserService
+	- App\Model\Services\CommentService
 	router: App\RouterFactory::createRouter
 
 
