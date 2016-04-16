@@ -1,17 +1,48 @@
 {block content}
 
-<section id="service">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="block-top">
-                            <div class="service-header">
-                                <h1>{$post->title}</h1>
-                                <p>{$post->content}</p>
-                            </div>
-                        </div>
-                    </div><!-- .col-md-12 close -->
-                </div><!-- row close -->
-            </div><!-- .container close -->
-</section><!-- #service close -->
+	<section id="service">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="block-top">
+						<div class="service-header">
+							<h1>{$post->title}</h1>
+							<p>{$post->content}</p>
+						</div>
+					</div>
+				</div><!-- .col-md-12 close -->
+			</div><!-- row close -->
+		</div><!-- .container close -->
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="block-top">
+						<div class="service-header">
+							<h4>Přidej komentář</h4>
+							<center>{control commentForm}</center>
+						</div>
+					</div>
+				</div><!-- .col-md-12 close -->
+			</div><!-- row close -->
+		</div><!-- .container close -->
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="block-top">
+						{if !count($comments)}
+							<div class="service-header">
+								K této stránce nebyly zveřejněny žádné komentáře.
+							</div>
+						{/if}
+						{foreach $comments as $comment}
+							<div class="service-header">
+								<p><b>{$comment->name}</b> napsal:</p>
+								<div>{$comment->content}</div>
+							</div>
+						{/foreach}
+					</div>
+				</div><!-- .col-md-12 close -->
+			</div><!-- row close -->
+		</div><!-- .container close -->
+	</section><!-- #service close -->
 {/block}
