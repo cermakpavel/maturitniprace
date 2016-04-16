@@ -1,69 +1,87 @@
 <?php
 namespace App\FrontModule\Presenters;
 
+use App\Model\Services\CommentService;
 use App\Model\Services\PostService;
 use App\Model\Services\SettingService;
 use Nette;
 use Nette\Application\UI\Form;
 
-
 class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 {
+	private $postService;
 
-    private $postService;
-    private $settingService;
+	private $settingService;
 
-    public function injectPost(PostService $postService)
-    {
-        $this->postService = $postService;
-    }
+	private $commentService;
 
-    public function injectSetting(SettingService $settingService)
-    {
-        $this->settingService = $settingService;
-    }
+	public function injectPost(PostService $postService)
+	{
+		$this->postService = $postService;
+	}
 
-    protected function startup() {
-        parent::startup();
+	public function injectSetting(SettingService $settingService)
+	{
+		$this->settingService = $settingService;
+	}
 
-        $setting = $this->settingService->getSetting();
-        if ($setting->onepage_layout) {
-            $this->redirect('Homepage:');
-        }
+	public function injectComment(CommentService $commentService)
+	{
+		$this->commentService = $commentService;
+	}
 
-    }
+	public function renderShow($postId)
+	{
+		$post = $this->postService->getPostById($postId);
+		$posts = $this->postService->getAllPosts();
+		if (!$post or !$posts) {
+			$this->error('Stránka nebyla nalezena');
+		}
+		$setting = $this->settingService->getSetting();
+		$comments = $this->commentService->getCommentsByPost($postId);
+		$this->template->post = $post;
+		$this->template->posts = $posts;
+		$this->template->setting = $setting;
+		$this->template->comments = $comments;
+	}
 
-    public function renderShow($postId)
-    {
-        $post = $this->postService->getPostById($postId);
-        $posts = $this->postService->getAllPosts();
-        if (!$post or !$posts) {
-            $this->error('Stránka nebyla nalezena');
-        }
-        $posts = $this->postService->getAllPosts();
-        $setting = $this->settingService->getSetting();
-        $this->template->post = $post;
-        $this->template->posts = $posts;
-        $this->template->setting = $setting;
-    }
+	public function commentFormSucceeded($form, $values)
+	{
+		$postId = $this->getParameter('postId');
+		
+		$this->commentService->insertComment($postId, $values);
 
-    protected function createComponentCommentForm()
-    {
-        $form = new Form;
+		$this->flashMessage('Komentář byl úspěšně publikován.', 'success');
+		$this->redirect('this');
+	}
 
-        $form->addText('name', 'Jméno:')
-            ->setRequired();
+	protected function startup()
+	{
+		parent::startup();
 
-        $form->addText('email', 'Email:')
-            ->setRequired();
+		$setting = $this->settingService->getSetting();
+		if ($setting->onepage_layout) {
+			$this->redirect('Homepage:');
+		}
 
-        $form->addTextArea('content', 'Komentář:')
-            ->setRequired();
+	}
 
-        $form->addSubmit('send', 'Odeslat komentář');
+	protected function createComponentCommentForm()
+	{
+		$form = new Form;
 
-        $form->onSuccess[] = array($this, 'commentFormSucceeded');
+		$form->addText('name', 'Jméno:')
+			->setRequired();
 
-        return $form;
-    }
+		$form->addText('email', 'Email:');
+
+		$form->addTextArea('content', 'Komentář:')
+			->setRequired();
+
+		$form->addSubmit('send', 'Publikovat komentář');
+
+		$form->onSuccess[] = [$this, 'commentFormSucceeded'];
+
+		return $form;
+	}
 }

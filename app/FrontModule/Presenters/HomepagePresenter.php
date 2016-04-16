@@ -2,16 +2,15 @@
 
 namespace App\FrontModule\Presenters;
 
-use Nette;
 use App\Model;
 use App\Model\Services\PostService;
 use App\Model\Services\SettingService;
-
+use Nette;
 
 class HomepagePresenter extends \App\BaseModule\Presenters\BasePresenter
 {
-
 	private $postService;
+
 	private $settingService;
 
 	public function injectPost(PostService $postService)
@@ -23,8 +22,17 @@ class HomepagePresenter extends \App\BaseModule\Presenters\BasePresenter
 	{
 		$this->settingService = $settingService;
 	}
-	
-	protected function startup() {
+
+	public function renderDefault()
+	{
+		$posts = $this->postService->getAllPosts();
+		$setting = $this->settingService->getSetting();
+		$this->template->posts = $posts;
+		$this->template->setting = $setting;
+	}
+
+	protected function startup()
+	{
 		parent::startup();
 
 		$setting = $this->settingService->getSetting();
@@ -33,13 +41,4 @@ class HomepagePresenter extends \App\BaseModule\Presenters\BasePresenter
 		}
 
 	}
-
-	public function renderDefault ()
-	{
-		$posts = $this->postService->getAllPosts();
-		$setting = $this->settingService->getSetting();
-		$this->template->posts = $posts;
-		$this->template->setting = $setting;
-	}
-
 }
