@@ -6,6 +6,11 @@ use App\Forms\SignFormFactory;
 use App\Model\Services\SettingService;
 use Nette;
 
+/**
+ * Presenter, který obstarává přihlášení a odhlášení do administrace.
+ *
+ * @package App\AdminModule\Presenters
+ */
 class SignPresenter extends \App\BaseModule\Presenters\BasePresenter
 {
 	/** @var SignFormFactory @inject */
@@ -13,15 +18,22 @@ class SignPresenter extends \App\BaseModule\Presenters\BasePresenter
 
 	private $settingService;
 
+	/**
+	 * Inject SettingService
+	 *
+	 * @param SettingService $settingService
+	 */
 	public function injectSetting(SettingService $settingService)
 	{
 		$this->settingService = $settingService;
 	}
 
 	/**
-	 * Pokud je uživatel přihlášený, přesměrujeme ho rovnou do administrace.
+	 * Při spuštění presenteru ověří, zda je uživatel přihlášen.
+	 * Pokud je přihlášen automaticky ho přesměruje na hlavní stránku administrace.
 	 */
-	protected function startup() {
+	protected function startup()
+	{
 		parent::startup();
 		if ($this->user->isLoggedIn() == TRUE && $this->getAction() != "out") {
 			$this->redirect(':Admin:Dashboard:');

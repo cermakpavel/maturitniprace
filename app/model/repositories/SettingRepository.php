@@ -2,18 +2,35 @@
 
 namespace App\Model\Repositories;
 
-
+/**
+ * Obstarává dotazy do databáze týkající se nastavení stránky.
+ *
+ * @package App\Model\Repositories
+ */
 class SettingRepository extends BaseRepository
 {
-    protected $name = "setting";
+	/**
+	 * Nastavení proměné $name, která udává do jaké tabulky vykonávat příkazy.
+	 */
+	protected $name = "setting";
 
-    public function getSetting()
-    {
-        return $this->getTable()->fetch();
-    }
+	/**
+	 * Získá aktuální nastavení.
+	 *
+	 * @return bool|\Nette\Database\Table\IRow
+	 */
+	public function getSetting()
+	{
+		return $this->getTable()->fetch();
+	}
 
-    public function updateSetting($values)
-    {
-        $this->getTable()->where('id', 1)->update($values);
-    }
+	/**
+	 * Upraví aktuální nastavení.
+	 *
+	 * @param $values
+	 */
+	public function updateSetting($values)
+	{
+		$this->getTable()->where('id', 1)->update($values);
+	}
 }

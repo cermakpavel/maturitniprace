@@ -4,6 +4,11 @@ namespace App\Model\Repositories;
 
 use Nette\Database\Context;
 
+/**
+ * Repository z kterého dědí ostatní repository.
+ *
+ * @package App\Model\Repositories
+ */
 abstract class BaseRepository
 {
 	/**
@@ -23,6 +28,11 @@ abstract class BaseRepository
 		$this->context = $context;
 	}
 
+	/**
+	 * SQL příkaz pro zvolení tabulky v databázi.
+	 *
+	 * @return \Nette\Database\Table\Selection
+	 */
 	public function getTable()
 	{
 		return $this->context->table($this->name);

@@ -6,22 +6,40 @@ use App\Model\Services\SettingService;
 use Nette;
 use Nette\Application\UI\Form;
 
+/**
+ * Presenter, který se stará o přidání, editaci a smazaní stránky.
+ *
+ * @package App\AdminModule\Presenters
+ */
 class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 {
+	private $postService;
 
-    private $postService;
-    private $settingService;
+	private $settingService;
 
-    public function injectPost(PostService $postService)
-    {
-        $this->postService = $postService;
-    }
+	/**
+	 * Inject PostService
+	 *
+	 * @param PostService $postService
+	 */
+	public function injectPost(PostService $postService)
+	{
+		$this->postService = $postService;
+	}
 
-    public function injectSetting(SettingService $settingService)
-    {
-        $this->settingService = $settingService;
-    }
+	/**
+	 * Inject SettingService
+	 *
+	 * @param SettingService $settingService
+	 */
+	public function injectSetting(SettingService $settingService)
+	{
+		$this->settingService = $settingService;
+	}
 
+	/**
+	 * Při spuštění presenteru ověří, zda je uživatel přihlášen a načte nastavení stránky.
+	 */
 	protected function startup()
 	{
 		parent::startup();
@@ -34,23 +52,40 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 		$this->template->setting = $setting;
 	}
 
-    public function actionEdit($postId)
-    {
-	    $post = $this->postService->getPostById($postId);
-	    $this->template->post = $post;
-	    if (!$post) {
-            $this->error('Příspěvek nebyl nalezen');
-        }
-        $this['postForm']->setDefaults($post->toArray());
-    }
+	/**
+	 * Zajišťujě editaci stránky.
+	 *
+	 * @param $postId
+	 * @throws Nette\Application\BadRequestException
+	 */
+	public function actionEdit($postId)
+	{
+		$post = $this->postService->getPostById($postId);
+		$this->template->post = $post;
+		if (!$post) {
+			$this->error('Příspěvek nebyl nalezen');
+		}
+		$this['postForm']->setDefaults($post->toArray());
+	}
 
-    public function actionDelete($postId) {
-	    $this->postService->deletePost($postId);
+	/**
+	 * Zajišťuje smazání stránky.
+	 *
+	 * @param $postId
+	 */
+	public function actionDelete($postId)
+	{
+		$this->postService->deletePost($postId);
 
-        $this->flashMessage('Stránka byla smazána.', 'info');
-        $this->redirect('Dashboard:');
-    }
+		$this->flashMessage('Stránka byla smazána.', 'info');
+		$this->redirect('Dashboard:');
+	}
 
+	/**
+	 * Vytvoří formulář a při úspěšném vyplnění formuláře a jeho odeslání předá hodnoty funkci postFormSucceeded.
+	 *
+	 * @return Form
+	 */
 	protected function createComponentPostForm()
 	{
 		$setting = $this->settingService->getSetting();
@@ -69,23 +104,28 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 		return $form;
 	}
 
+	/**
+	 * Získaná data z formuláře uloží do databáze.
+	 *
+	 * @param $form
+	 * @param $values
+	 */
 	public function postFormSucceeded($form, $values)
-    {
-        $setting = $this->settingService->getSetting();
-	    $this->template->setting = $setting;
+	{
+		$setting = $this->settingService->getSetting();
+		$this->template->setting = $setting;
 
-	    $postId = $this->getParameter('postId');
+		$postId = $this->getParameter('postId');
 
-	    if ($postId) {
-		    $this->postService->getPostById($postId);
-		    $this->postService->updatePost($postId, $values);
-	    } else {
-		    $this->postService->getAllPosts();
-		    $this->postService->insertPost($values);
-	    }
+		if ($postId) {
+			$this->postService->getPostById($postId);
+			$this->postService->updatePost($postId, $values);
+		} else {
+			$this->postService->getAllPosts();
+			$this->postService->insertPost($values);
+		}
 
-	    $this->flashMessage('Příspěvek byl úspěšně publikován.', 'success');
-	    $this->redirect('Dashboard:');
-    }
-
+		$this->flashMessage('Příspěvek byl úspěšně publikován.', 'success');
+		$this->redirect('Dashboard:');
+	}
 }

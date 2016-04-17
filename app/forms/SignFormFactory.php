@@ -6,18 +6,34 @@ use Nette;
 use Nette\Application\UI\Form;
 use Nette\Security\User;
 
+/**
+ * Obstarává přihlašovací formulář.
+ *
+ * @package App\Forms
+ */
 class SignFormFactory extends Nette\Object
 {
 	/** @var FormFactory */
 	private $factory;
+
 	/** @var User */
 	private $user;
+
+	/**
+	 * SignFormFactory constructor.
+	 *
+	 * @param FormFactory $factory
+	 * @param User $user
+	 */
 	public function __construct(FormFactory $factory, User $user)
 	{
 		$this->factory = $factory;
 		$this->user = $user;
 	}
+
 	/**
+	 * Vytvoří formulář pro přihlašování, při jeho úspěném vyplnění předá hodnoty funkci formSucceeded.
+	 *
 	 * @return Form
 	 */
 	public function create()
@@ -32,9 +48,16 @@ class SignFormFactory extends Nette\Object
 		$form->addCheckbox('remember', ' Zůstat přihlášen');
 		$form->addSubmit('send', 'Přihlaš se')
 			->getControlPrototype()->class('btn btn-primary');
-		$form->onSuccess[] = array($this, 'formSucceeded');
+		$form->onSuccess[] = [$this, 'formSucceeded'];
 		return $form;
 	}
+
+	/**
+	 * Ověří zda je login a heslo správné, pokud ano uživatele přihlásí.
+	 *
+	 * @param Form $form
+	 * @param $values
+	 */
 	public function formSucceeded(Form $form, $values)
 	{
 		if ($values->remember) {

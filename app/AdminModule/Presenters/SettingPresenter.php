@@ -5,6 +5,11 @@ use App\Model\Services\SettingService;
 use Nette;
 use Nette\Application\UI\Form;
 
+/**
+ * Zajišťuje výpis stránky Nastavení
+ *
+ * @package App\AdminModule\Presenters
+ */
 class SettingPresenter extends \App\BaseModule\Presenters\BasePresenter
 {
 	private $settingService;
@@ -14,13 +19,9 @@ class SettingPresenter extends \App\BaseModule\Presenters\BasePresenter
 		$this->settingService = $settingService;
 	}
 
-	public function actionEdit()
-	{
-		$setting = $this->settingService->getSetting();
-		$this->template->setting = $setting;
-		$this['settingForm']->setDefaults($setting->toArray());
-	}
-
+	/**
+	 * Při spuštění presenteru ověř, zda je uživatel přihlášen.
+	 */
 	protected function startup()
 	{
 		parent::startup();
@@ -30,6 +31,22 @@ class SettingPresenter extends \App\BaseModule\Presenters\BasePresenter
 		}
 	}
 
+	/**
+	 * Zajišťuje editaci nastavení stránky.
+	 */
+	public function actionEdit()
+	{
+		$setting = $this->settingService->getSetting();
+		$this->template->setting = $setting;
+		$this['settingForm']->setDefaults($setting->toArray());
+	}
+
+	/**
+	 * Vytvoří formulář pro úpravu nastavení stránky + předá mu hodnoty.
+	 * Po úspěšném vyplnění předá hodnoty funkci settinFormSucceeded.
+	 *
+	 * @return Form
+	 */
 	protected function createComponentSettingForm()
 	{
 		$form = new Form;
@@ -48,6 +65,12 @@ class SettingPresenter extends \App\BaseModule\Presenters\BasePresenter
 		return $form;
 	}
 
+	/**
+	 * Převezme hodnoty z formuláře a uloží je do databáze.
+	 *
+	 * @param $form
+	 * @param $values
+	 */
 	public function settingFormSucceeded($form, $values)
 	{
 		$this->settingService->updateSetting($values);

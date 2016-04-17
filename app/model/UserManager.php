@@ -6,7 +6,7 @@ use Nette\Security as NS;
 use Nette\Security\Passwords;
 
 /**
- * Users management.
+ * Obstarává ověření, přidání uživatelů.
  */
 class UserManager extends Nette\Object implements NS\IAuthenticator
 {

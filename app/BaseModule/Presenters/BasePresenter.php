@@ -6,9 +6,8 @@ use App\Model;
 use Nette;
 
 /**
- * Base presenter for all application presenters.
+ * Základní presenter z kterého dědí všechny ostatní presentery v aplikaci.
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
-
 }
