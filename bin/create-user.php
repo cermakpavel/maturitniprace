@@ -4,7 +4,7 @@ if (!isset($_SERVER['argv'][2])) {
 	echo '
 Add new user to database.
 
-Usage: create-user.php <name> <password>
+Usage: UserPresenter.php <name> <password>
 ';
 	exit(1);
 }
