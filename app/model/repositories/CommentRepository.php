@@ -36,7 +36,6 @@ class CommentRepository extends BaseRepository
 		$this->getTable()->insert([
 			'post_id' => $postId,
 			'name' => $values->name,
-			'email' => $values->email,
 			'content' => $values->content,
 		]);
 
