@@ -1,5 +1,4 @@
 {block content}
-
 	<section id="service">
 		<div class="container">
 			<div class="row">
@@ -7,7 +6,9 @@
 					<div class="block-top">
 						<div class="service-header">
 							<h1>{$post->title}</h1>
-							{$post->content}
+						</div>
+						<div class="service-content">
+							{!$post->content}
 						</div>
 					</div>
 				</div><!-- .col-md-12 close -->
@@ -50,7 +51,7 @@
 							{if ($comment->approved == 1)}
 							<div class="service-header">
 								<h4>{$comment->name} napsal:</h4>
-								{$comment->content}
+								{!$comment->content}
 							</div>
 							{/if}
 						{/foreach}
