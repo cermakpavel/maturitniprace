@@ -71,9 +71,11 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 	{
 		$post = $this->postService->getPostById($postId);
 		$posts = $this->postService->getAllPosts();
-		if (!$post & !$posts) {
-
-			$this->redirect('Error:');
+		if ($post == FALSE) {
+			$this->redirect('Base:Error:');
+		}
+		if ($posts == FALSE) {
+			$this->redirect('Base:Error:');
 		}
 		$setting = $this->settingService->getSetting();
 		$comments = $this->commentService->getCommentsByPost($postId);

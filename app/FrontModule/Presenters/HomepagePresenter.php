@@ -59,6 +59,9 @@ class HomepagePresenter extends \App\BaseModule\Presenters\BasePresenter
 	public function renderDefault()
 	{
 		$posts = $this->postService->getAllPosts();
+		if ($posts == FALSE) {
+			$this->redirect('Base:Error:');
+		}
 		$setting = $this->settingService->getSetting();
 		$this->template->posts = $posts;
 		$this->template->setting = $setting;
