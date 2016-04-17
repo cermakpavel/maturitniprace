@@ -7,51 +7,55 @@ use Nette\Application\UI\Form;
 
 class SettingPresenter extends \App\BaseModule\Presenters\BasePresenter
 {
-    private $settingService;
+	private $settingService;
 
-    public function injectSetting(SettingService $settingService)
-    {
-        $this->settingService = $settingService;
-    }
+	public function injectSetting(SettingService $settingService)
+	{
+		$this->settingService = $settingService;
+	}
 
-    public function actionEdit()
-    {
-        $setting = $this->settingService->getSetting();
-        $this->template->setting = $setting;
-        $this['settingForm']->setDefaults($setting->toArray());
-    }
+	public function actionEdit()
+	{
+		$setting = $this->settingService->getSetting();
+		$this->template->setting = $setting;
+		$this['settingForm']->setDefaults($setting->toArray());
+	}
 
-    public function settingFormSucceeded($form, $values)
-    {
-        $setting = $this->settingService->getSetting();
-        $setting->update($values);
+	protected function startup()
+	{
+		parent::startup();
 
-        $this->flashMessage('Nastavení bylo úspěšně uloženo.', 'success');
-        $this->redirect('Dashboard:');
-    }
+		if ($this->user->isLoggedIn() != TRUE) {
+			$this->redirect(':Admin:Sign:in');
+		}
+	}
 
-    protected function startup() {
-        parent::startup();
+	protected function createComponentSettingForm()
+	{
+		$form = new Form;
+		$template = ['Multipage', 'Onepage'];
+		$form->addText('title', 'Název stránky:')
+			->getControlPrototype()->class('form-control')
+			->setRequired();
+		$form->addTextArea('subtitle', 'Podtitulek stránky:')
+			->setRequired();
+		$form->addCheckbox('comments', 'Povolit komentáře');
+		$form->addSelect('onepage_layout', 'Zvolte druh šablony:', $template);
 
-        if ($this->user->isLoggedIn() != TRUE) {
-            $this->redirect(':Admin:Sign:in');
-        }
-    }
+		$form->addSubmit('send', 'Uložit nastavení');
+		$form->onSuccess[] = [$this, 'settingFormSucceeded'];
 
-    protected function createComponentSettingForm()
-    {
-        $form = new Form;
-        $template = array('Multipage','Onepage');
-        $form->addText('title', 'Název stránky:')
-            ->getControlPrototype()->class('form-control')
-            ->setRequired();
-        $form->addTextArea('subtitle', 'Podtitulek stránky:')
-            ->setRequired();
-        $form->addSelect('onepage_layout', 'Zvolte druh šablony:', $template);
+		return $form;
+	}
 
-        $form->addSubmit('send', 'Uložit nastavení');
-        $form->onSuccess[] = array($this, 'settingFormSucceeded');
+	public function settingFormSucceeded($form, $values)
+	{
+		$this->settingService->updateSetting($values);
 
-        return $form;
-    }
+		$setting = $this->settingService->getSetting();
+		$setting->update($values);
+
+		$this->flashMessage('Nastavení bylo úspěšně uloženo.', 'success');
+		$this->redirect('Dashboard:');
+	}
 }

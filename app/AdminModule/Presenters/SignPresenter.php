@@ -19,16 +19,6 @@ class SignPresenter extends \App\BaseModule\Presenters\BasePresenter
 	}
 
 	/**
-	 * Uživatele odhlásíme a přesměrujeme na přihlašovací okno administrace.
-	 */
-	public function actionOut()
-	{
-		$this->getUser()->logout();
-		$this->flashMessage('Byl/a jste odhlášen/a.');
-		$this->redirect('in');
-	}
-
-	/**
 	 * Pokud je uživatel přihlášený, přesměrujeme ho rovnou do administrace.
 	 */
 	protected function startup() {
@@ -50,5 +40,15 @@ class SignPresenter extends \App\BaseModule\Presenters\BasePresenter
 			$form->getPresenter()->redirect('Dashboard:');
 		};
 		return $form;
+	}
+
+	/**
+	 * Uživatele odhlásíme a přesměrujeme na přihlašovací okno administrace.
+	 */
+	public function actionOut()
+	{
+		$this->getUser()->logout();
+		$this->flashMessage('Byl/a jste odhlášen/a.');
+		$this->redirect('in');
 	}
 }
