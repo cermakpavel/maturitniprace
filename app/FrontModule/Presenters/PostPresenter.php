@@ -35,7 +35,8 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 		$post = $this->postService->getPostById($postId);
 		$posts = $this->postService->getAllPosts();
 		if (!$post or !$posts) {
-			$this->error('Stránka nebyla nalezena');
+
+			$this->redirect('Error:');
 		}
 		$setting = $this->settingService->getSetting();
 		$comments = $this->commentService->getCommentsByPost($postId);
@@ -43,16 +44,6 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 		$this->template->posts = $posts;
 		$this->template->setting = $setting;
 		$this->template->comments = $comments;
-	}
-
-	public function commentFormSucceeded($form, $values)
-	{
-		$postId = $this->getParameter('postId');
-		
-		$this->commentService->insertComment($postId, $values);
-
-		$this->flashMessage('Komentář byl úspěšně publikován.', 'success');
-		$this->redirect('this');
 	}
 
 	protected function startup()
@@ -73,8 +64,6 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 		$form->addText('name', 'Jméno:')
 			->setRequired();
 
-		$form->addText('email', 'Email:');
-
 		$form->addTextArea('content', 'Komentář:')
 			->setRequired();
 
@@ -83,5 +72,15 @@ class PostPresenter extends \App\BaseModule\Presenters\BasePresenter
 		$form->onSuccess[] = [$this, 'commentFormSucceeded'];
 
 		return $form;
+	}
+
+	public function commentFormSucceeded($form, $values)
+	{
+		$postId = $this->getParameter('postId');
+
+		$this->commentService->insertComment($postId, $values);
+
+		$this->flashMessage('Komentář byl úspěšně publikován.', 'success');
+		$this->redirect('this');
 	}
 }
