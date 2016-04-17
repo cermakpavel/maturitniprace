@@ -7,6 +7,11 @@ use Nette\Application\Responses;
 use Nette\SmartObject;
 use Tracy\ILogger;
 
+/**
+ * Presenter se stará o výpis Errorů
+ *
+ * @package App\BaseModule\Presenters
+ */
 class ErrorPresenter implements Nette\Application\IPresenter
 {
 	/** @var ILogger */
@@ -17,6 +22,12 @@ class ErrorPresenter implements Nette\Application\IPresenter
 		$this->logger = $logger;
 	}
 
+	/**
+	 * Pokud jde o error 4xx přesměruje na Error4xxPresenter, jinak vypíše 500
+	 *
+	 * @param Nette\Application\Request $request
+	 * @return Responses\CallbackResponse|Responses\ForwardResponse
+	 */
 	public function run(Nette\Application\Request $request)
 	{
 		$exception = $request->getParameter('exception');
