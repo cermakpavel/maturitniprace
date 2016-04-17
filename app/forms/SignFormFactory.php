@@ -23,12 +23,15 @@ class SignFormFactory extends Nette\Object
 	public function create()
 	{
 		$form = $this->factory->create();
-		$form->addText('username', 'Username:')
-			->setRequired('Please enter your username.');
-		$form->addPassword('password', 'Password:')
-			->setRequired('Please enter your password.');
-		$form->addCheckbox('remember', 'Keep me signed in');
-		$form->addSubmit('send', 'Sign in');
+		$form->addText('username', 'Login:')
+			->setRequired('Prosím zadej přihlašovací jméno.')
+			->getControlPrototype()->class('form-control');
+		$form->addPassword('password', 'Heslo:')
+			->setRequired('Prosím zadej heslo.')
+			->getControlPrototype()->class('form-control');
+		$form->addCheckbox('remember', ' Zůstat přihlášen');
+		$form->addSubmit('send', 'Přihlaš se')
+			->getControlPrototype()->class('btn btn-primary');
 		$form->onSuccess[] = array($this, 'formSucceeded');
 		return $form;
 	}
