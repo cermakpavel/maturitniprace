@@ -7,19 +7,31 @@
 					<div class="block-top">
 						<div class="service-header">
 							<h1>{$post->title}</h1>
-							<p>{$post->content}</p>
+							{$post->content}
 						</div>
 					</div>
 				</div><!-- .col-md-12 close -->
 			</div><!-- row close -->
 		</div><!-- .container close -->
+		{if ($setting->comments == 1)}
 		<div class="container">
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-3">
+				</div>
+				<div class="col-md-6">
 					<div class="block-top">
 						<div class="service-header">
+							<br>
 							<h4>Přidej komentář</h4>
-							<center>{control commentForm}</center>
+							<div n:foreach="$flashes as $flash" class="alert alert-success">
+								{$flash->message}
+							</div>
+							{form commentForm}
+								Jméno: {input name class => "form-control"}
+								Obsah:
+								{input content class => "form-control", rows => "5"}
+								{input send class => "btn btn-primary"}
+							{/form}
 						</div>
 					</div>
 				</div><!-- .col-md-12 close -->
@@ -35,14 +47,17 @@
 							</div>
 						{/if}
 						{foreach $comments as $comment}
+							{if ($comment->approved == 1)}
 							<div class="service-header">
-								<p><b>{$comment->name}</b> napsal:</p>
-								<div>{$comment->content}</div>
+								<h4>{$comment->name} napsal:</h4>
+								{$comment->content}
 							</div>
+							{/if}
 						{/foreach}
 					</div>
 				</div><!-- .col-md-12 close -->
 			</div><!-- row close -->
 		</div><!-- .container close -->
+		{/if}
 	</section><!-- #service close -->
 {/block}

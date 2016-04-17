@@ -6,7 +6,7 @@
      <head>
          <meta charset="utf-8">
          <meta http-equiv="X-UA-Compatible" content="IE=edge">
-         <title>{$setting->title}</title>
+		 <title>{$setting->title} - {$setting->subtitle}</title>
 
          <meta name="description" content="">
          <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -84,7 +84,6 @@
                  </div><!-- .row close -->
              </div><!-- .container close -->
          </section><!-- #heder close -->
-	<div n:foreach="$flashes as $flash" n:class="flash, $flash->type">{$flash->message}</div>
 
 	{include content}
 
