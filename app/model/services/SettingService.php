@@ -30,4 +30,9 @@ class SettingService
     {
         return $this->settingRepository->getSetting(1);
     }
+
+    public function updateSetting($values)
+    {
+        $this->settingRepository->updateSetting($values);
+    }
 }

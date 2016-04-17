@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: pajos
- * Date: 08.04.2016
- * Time: 17:34
- */
 
 namespace App\Model\Repositories;
 
@@ -16,5 +10,10 @@ class SettingRepository extends BaseRepository
     public function getSetting()
     {
         return $this->getTable()->fetch();
+    }
+
+    public function updateSetting($values)
+    {
+        $this->getTable()->where('id', 1)->update($values);
     }
 }

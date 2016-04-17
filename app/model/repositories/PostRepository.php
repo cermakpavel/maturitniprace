@@ -29,6 +29,6 @@ class PostRepository extends BaseRepository
 
 	public function deletePost($postId)
 	{
-		return $this->getTable()->where($postId)->delete();
+		$this->getTable()->where('id', $postId)->delete();
 	}
 }
