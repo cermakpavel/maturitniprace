@@ -15,9 +15,6 @@ class RouterFactory
 	public static function createRouter()
 	{
 		$router = new RouteList();
-		$router[] = $frontRouter = new RouteList('Front');
-		$frontRouter[] = new Route('home', 'Homepage:');
-		$frontRouter[] = new Route('post', 'Post:');
 		$router[] = $adminRouter = new RouteList('Admin');
 		$adminRouter[] = new Route('sign', 'Sign:in');
 		$adminRouter[] = new Route('dashboard', 'Dashboard:');
@@ -27,6 +24,9 @@ class RouterFactory
 		$adminRouter[] = new Route('create', 'Post:create');
 		$adminRouter[] = new Route('setting', 'Setting:edit');
 		$adminRouter[] = new Route('comments', 'Comments:');
+		$router[] = $frontRouter = new RouteList('Front');
+		$frontRouter[] = new Route('home', 'Homepage:');
+		$frontRouter[] = new Route('post', 'Post:');
 		return $router;
 	}
 
