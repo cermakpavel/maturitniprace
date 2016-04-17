@@ -58,7 +58,8 @@
     <div class="col-lg-6">
         <div class="panel panel-default">
             <div class="panel-heading">
-                Nové komentáře
+                {if ($setting->comments == 1)}Nové komentáře{/if}
+                {if ($setting->comments == 0)}Přidávání komentářů není povoleno{/if}
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">
