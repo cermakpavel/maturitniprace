@@ -10,7 +10,8 @@ php:
 
 
 application:
-	errorPresenter: Error
+	errorPresenter: Base:Error
+	catchExceptions: true
 	mapping:
 		*: App\*Module\Presenters\*Presenter
 
@@ -29,5 +30,3 @@ services:
 	- App\Model\Services\PostService
 	- App\Model\Services\CommentService
 	router: App\RouterFactory::createRouter
-
-
